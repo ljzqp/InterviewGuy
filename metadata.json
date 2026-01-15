@@ -1,0 +1,5 @@
+{
+  "name": "TalentScout AI - Intelligent Interviewer",
+  "description": "An AI-powered recruitment platform that analyzes resumes against JDs to generate deep, scenario-based interview questions and evaluates candidate responses for comprehensive capability profiling.",
+  "requestFramePermissions": []
+}
