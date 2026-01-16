@@ -31,7 +31,13 @@ export interface FileData {
   data: string; // Base64
 }
 
-export const PREDEFINED_JDS = [
+export interface JdItem {
+  id: string;
+  title: string;
+  content: string;
+}
+
+export const PREDEFINED_JDS: JdItem[] = [
   {
     id: 'senior-frontend',
     title: '高级前端工程师 (Senior Frontend)',
