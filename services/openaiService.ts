@@ -1,5 +1,7 @@
 import { InterviewQuestion, EvaluationResult, FileData } from "../types";
 
+import { tryParseJSON } from "../utils/jsonUtils";
+
 // Helper to log requests securely
 const logRequest = (url: string, body: any, apiKey: string) => {
     const maskedKey = apiKey ? `${apiKey.substring(0, 3)}...${apiKey.substring(apiKey.length - 4)}` : 'NOT_SET';
@@ -15,22 +17,11 @@ const logRequest = (url: string, body: any, apiKey: string) => {
 
 // Helper to extract JSON from markdown or raw text
 const extractJson = (text: string): any => {
-    try {
-        // 1. Try direct parse
-        return JSON.parse(text);
-    } catch (e) {
-        // 2. Try to find generic JSON array or object
-        // This handles ```json blocks or just text with JSON inside
-        const match = text.match(/\[[\s\S]*\]|\{[\s\S]*\}/);
-        if (match) {
-            try {
-                return JSON.parse(match[0]);
-            } catch (e2) {
-                console.error("Failed to parse extracted JSON:", match[0]);
-            }
-        }
-        throw new Error("Could not parse JSON response.");
-    }
+    const result = tryParseJSON(text);
+    if (result) return result;
+
+    console.error("JSON Extraction Failed. Content length:", text.length, "Preview:", text.substring(0, 100) + "..." + text.substring(text.length - 100));
+    throw new Error("Could not parse JSON response (Auto-repair failed).");
 };
 
 const callOpenAI = async (
