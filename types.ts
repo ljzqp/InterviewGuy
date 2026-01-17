@@ -23,6 +23,7 @@ export interface EvaluationResult {
   weaknesses: string[];
   hiringRecommendation: 'Strong Hire' | 'Hire' | 'Caution' | 'No Hire';
   reasoning: string;
+  followUp?: string[]; // For appended content
 }
 
 export interface FileData {

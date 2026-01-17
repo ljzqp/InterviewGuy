@@ -8,10 +8,21 @@ export const tryParseJSON = <T>(jsonString: string): T | null => {
     try {
         // 1. Try generic robust parse first (handles markdown wrapping but expects valid JSON)
         // Similar to logic in openaiService but simplified here
+        // 1. Regex to find the largest outer JSON block (arrays or objects)
+        // Matches from first '[' to last ']', or first '{' to last '}'
+        const arrayMatch = jsonString.match(/\[[\s\S]*\]/);
+        const objectMatch = jsonString.match(/\{[\s\S]*\}/);
+
         let cleanStr = jsonString;
-        const match = jsonString.match(/\[[\s\S]*\]|\{[\s\S]*\}/);
-        if (match) {
-            cleanStr = match[0];
+
+        if (arrayMatch && objectMatch) {
+            // Pick longest? or outer? usually if we want array, text starts with [
+            // Heuristic: if input looks like an array, prefer array
+            cleanStr = arrayMatch[0].length > objectMatch[0].length ? arrayMatch[0] : objectMatch[0];
+        } else if (arrayMatch) {
+            cleanStr = arrayMatch[0];
+        } else if (objectMatch) {
+            cleanStr = objectMatch[0];
         } else {
             // If no brackets found yet, it's not ready
             return null;

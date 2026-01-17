@@ -1,1 +1,51 @@
 @import "tailwindcss";
+
+@layer utilities {
+    .animate-reverse-spin {
+        animation: reverse-spin 1s linear infinite;
+    }
+
+    .animate-bounce-slight {
+        animation: bounce-slight 2s infinite;
+    }
+
+    .animate-progress-indeterminate {
+        animation: progress-indeterminate 1.5s infinite ease-in-out;
+    }
+}
+
+@keyframes reverse-spin {
+    from {
+        transform: rotate(360deg);
+    }
+
+    to {
+        transform: rotate(0deg);
+    }
+}
+
+@keyframes bounce-slight {
+
+    0%,
+    100% {
+        transform: translateY(-5%);
+    }
+
+    50% {
+        transform: translateY(5%);
+    }
+}
+
+@keyframes progress-indeterminate {
+    0% {
+        transform: translateX(-100%);
+    }
+
+    50% {
+        transform: translateX(0%);
+    }
+
+    100% {
+        transform: translateX(100%);
+    }
+}
